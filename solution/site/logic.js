@@ -193,3 +193,29 @@ window.addEventListener('scroll',()=>{
 const msgs=['Я думаю о тебе каждый день.','Ты изменился. Это хорошо.','Помню, как мы смеялись тогда...','Не вини себя. Я не виню.'];
 let mi=0;const amsg=document.getElementById('amsg');
 setInterval(()=>{mi=(mi+1)%msgs.length;amsg.style.opacity='0';amsg.style.transition='opacity .4s';setTimeout(()=>{amsg.textContent=msgs[mi];amsg.style.opacity='1'},400)},3500);
+
+
+// ===== МОБИЛЬНОЕ МЕНЮ =====
+const burger = document.getElementById('burgerBtn');
+const navLinks = document.querySelector('.nav-links');
+if (burger && navLinks) {
+  burger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navLinks.classList.toggle('open');
+    burger.classList.toggle('open');
+  });
+  // Закрытие меню при клике на ссылку
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      burger.classList.remove('open');
+    });
+  });
+  // Закрытие при клике вне меню
+  document.addEventListener('click', (e) => {
+    if (!navLinks.contains(e.target) && !burger.contains(e.target)) {
+      navLinks.classList.remove('open');
+      burger.classList.remove('open');
+    }
+  });
+}
