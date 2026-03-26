@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLUTION — Recreate Who You Lost</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">k
+</head>
+<body>
+
+<div class="cur" id="cur"><div class="cur-dot"></div></div>
+<div class="cur-ring" id="curring"></div>
+<div class="toast" id="toast"><div class="tdot b" id="tdot"></div><span id="tmsg"></span></div>
+
+<!-- ═══════════ AUTH MODAL ═══════════ -->
+<div class="backdrop" id="auth-bd">
+  <div class="modal">
+    <div class="modal-stripe"></div>
+    <div class="modal-hd">
+      <div class="modal-lbl" id="albl">АВТОРИЗАЦИЯ</div>
+      <div class="modal-h" id="atitle">Войти в систему</div>
+      <button class="mclose" onclick="closeM('auth-bd')">✕</button>
+    </div>
+    <div class="modal-bd">
+      <div class="mtabs" id="atabs">
+        <button class="mtab on" id="tlogin" onclick="setTab('login')">Вход</button>
+        <button class="mtab" id="treg" onclick="setTab('reg')">Регистрация</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="lform">
+        <div class="fg"><label class="flbl">Email</label><input class="fi" id="le" type="email" placeholder="your@email.com"><div class="ferr" id="le-e">Введите корректный email</div></div>
+        <div class="fg"><label class="flbl">Пароль</label><input class="fi" id="lp" type="password" placeholder="••••••••"><div class="ferr" id="lp-e">Неверный email или пароль</div></div>
+        <button class="fsub" id="lbtn" onclick="doLogin()">Войти</button>
+        <div class="fswitch">Нет аккаунта? <a href="#" onclick="setTab('reg');return false">Создать</a></div>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="rform" style="display:none">
+        <div class="fg"><label class="flbl">Имя</label><input class="fi" id="rn" type="text" placeholder="username"><div class="ferr" id="rn-e">Минимум 3 символа</div></div>
+        <div class="fg"><label class="flbl">Email</label><input class="fi" id="re" type="email" placeholder="your@email.com"><div class="ferr" id="re-e">Введите корректный email</div></div>
+        <div class="fg"><label class="flbl">Пароль</label><input class="fi" id="rp" type="password" placeholder="минимум 6 символов"><div class="ferr" id="rp-e">Минимум 6 символов</div></div>
+        <div class="fg"><label class="flbl">Повтор пароля</label><input class="fi" id="rp2" type="password" placeholder="••••••••"><div class="ferr" id="rp2-e">Пароли не совпадают</div></div>
+        <button class="fsub" id="rbtn" onclick="doReg()">Создать аккаунт</button>
+        <div class="fswitch">Уже есть аккаунт? <a href="#" onclick="setTab('login');return false">Войти</a></div>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="msuccess" id="asuc">
+        <div class="msuccess-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 10l4.5 4.5 9.5-9" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="msuccess-h" id="asuc-h">Добро пожаловать</div>
+        <p class="msuccess-s" id="asuc-s">Вход выполнен успешно.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PREMIUM MODAL ═══════════ -->
+<div class="backdrop" id="prem-bd">
+  <div class="modal prem-modal">
+    <div class="modal-stripe prem-stripe"></div>
+    <div class="modal-hd">
+      <div class="prem-lbl">// SOLUTION PREMIUM</div>
+      <div class="prem-h">Выбери <span>план</span></div>
+      <button class="mclose" onclick="closeM('prem-bd')">✕</button>
+    </div>
+    <div class="modal-bd">
+
+      <!-- PLANS -->
+      <div id="plans-view">
+        <div class="plans">
+          <div class="plan">
+            <div class="plan-tier">// FREE</div>
+            <div class="plan-price">0<sub>$</sub></div>
+            <div class="plan-mo">навсегда бесплатно</div>
+            <ul class="plan-feats">
+              <li class="pf">Один компаньон</li>
+              <li class="pf">Текстовые диалоги</li>
+              <li class="pf">Голос до 1 минуты</li>
+              <li class="pf off">Видеозвонок с персонажем</li>
+              <li class="pf off">Несколько компаньонов</li>
+              <li class="pf off">Созвоны дольше 10 мин</li>
+            </ul>
+            <button class="plan-btn" onclick="closeM('prem-bd')">Текущий план</button>
+          </div>
+          
+<div class="plan hot">
+  <div class="plan-badge">ПОПУЛЯРНЫЙ</div>
+  <div class="plan-tier">// PREMIUM</div>
+  <div class="plan-price">100<sub>$</sub></div>
+  <div class="plan-mo">в месяц · отмена в любой момент</div>
+  <ul class="plan-feats">
+    <li class="pf">Всё из Free</li>
+    <li class="pf" style="color:var(--cyan)">Видеозвонок с персонажем</li>
+    <li class="pf" style="color:var(--cyan)">До 10 компаньонов и чатов</li>
+    <li class="pf" style="color:var(--cyan)">Созвоны без ограничений</li>
+    <li class="pf">Приоритетная поддержка</li>
+    <li class="pf">Ранний доступ к функциям</li>
+  </ul>
+  <button class="plan-btn cyan-btn" onclick="showPay()">Оформить Premium</button>
+</div>
+        </div>
+        <div class="prem-note">// Stripe · SSL · автопродление ежемесячно</div>
+      </div>
+
+      <!-- PAYMENT -->
+      <div class="payform" id="payform">
+        <button class="pay-back" onclick="showPlans()">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 1L3 6l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          НАЗАД
+        </button>
+        <div class="pay-sum">
+          <div class="pay-sum-lbl">SOLUTION PREMIUM · ежемесячно</div>
+          <div class="pay-sum-price">$100 / мес</div>
+        </div>
+        <div class="fg"><label class="flbl">Имя на карте</label><input class="fi" id="pn" type="text" placeholder="IVAN PETROV"></div>
+        <div class="fg"><label class="flbl">Номер карты</label><input class="fi" id="pc" type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)"><div class="ferr" id="pc-e">Введите корректный номер</div></div>
+        <div class="two-col">
+          <div class="fg"><label class="flbl">Срок</label><input class="fi" id="pe" type="text" placeholder="MM/YY" maxlength="5" oninput="fmtExp(this)"><div class="ferr" id="pe-e">Формат MM/YY</div></div>
+          <div class="fg"><label class="flbl">CVV</label><input class="fi" id="pv" type="text" placeholder="•••" maxlength="3"><div class="ferr" id="pv-e">3 цифры</div></div>
+        </div>
+        <button class="fsub" id="paybtn" onclick="doPay()" style="background:var(--gold);color:var(--black)">Оплатить · $100 / мес</button>
+        <div class="pay-sec-note">// Безопасная оплата · Stripe · TLS 1.3 · данные зашифрованы</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav id="mainnav">
+  <a href="#" class="nav-logo">SOL<em>.</em>UTION</a>
+  <ul class="nav-links">
+    <li><a href="#how">Как работает</a></li>
+    <li><a href="#pricing">Цены</a></li>
+    <li><a href="#feats">Возможности</a></li>
+    <li><a href="#revs">Отзывы</a></li>
+  </ul>
+  <div class="nav-right">
+    <!-- GUEST -->
+    <div id="nav-guest" style="display:flex;gap:12px;align-items:center">
+      <div class="nav-tag">v2.4.1</div>
+      <button class="nav-btn" onclick="openM('auth-bd')">Войти</button>
+      <button class="nav-btn nav-btn-cyan" onclick="openM('auth-bd');setTab('reg')"><span class="lbl">Регистрация</span></button>
+    </div>
+    <!-- USER -->
+    <div id="nav-user" style="display:none">
+      <div class="nav-user-wrap" id="userwrap">
+        <button class="nav-user-btn" onclick="toggleDrop()">
+          <div class="nav-avatar" id="navav">?</div>
+          <div style="text-align:left">
+            <div class="nav-uname" id="navun">user</div>
+            <div class="nav-badge" id="navbadge" style="display:none">PREMIUM</div>
+          </div>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="margin-left:4px"><path d="M2 4l3 3 3-3" stroke="var(--dim)" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </button>
+        <div class="acc-drop" id="accdrop">
+          <div class="acc-info">
+            <div class="acc-info-name" id="dname">Name</div>
+            <div class="acc-info-email" id="demail">email</div>
+          </div>
+          <button class="acc-row gold-row" id="dprem" onclick="openPrem()">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 3 3.5.5-2.5 2.5.5 3.5L7 9l-3 1.5.5-3.5L2 4.5 5.5 4z" fill="var(--gold)"/></svg>
+            Улучшить до Premium
+          </button>
+          <button class="acc-row gold-row" id="dmanage" onclick="openPrem()" style="display:none">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 3 3.5.5-2.5 2.5.5 3.5L7 9l-3 1.5.5-3.5L2 4.5 5.5 4z" fill="var(--gold)"/></svg>
+            Управление подпиской
+          </button>
+          <button class="acc-row">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="7" cy="5" r="2.5"/><path d="M2 13c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg>
+            Профиль
+          </button>
+          <button class="acc-row">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2 3h10M4 3V2a1 1 0 011-1h4a1 1 0 011 1v1M5 7v4M9 7v4"/></svg>
+            Мои компаньоны
+          </button>
+          <button class="acc-row sep" onclick="doLogout()">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M9 2h2a1 1 0 011 1v8a1 1 0 01-1 1H9M5 10l-3-3 3-3M2 7h7"/></svg>
+            Выйти
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-l">
+    <div class="hchip rv">AI COMPANION ENGINE · ACTIVE</div>
+    <h1 class="htitle"><span class="glitch" data-text="SOLU">SOLU</span><br><span class="glitch" data-text="TION">TION</span></h1>
+    <p class="hsubt rv">recreate<br>who you <span>miss</span></p>
+    <p class="hdesc rv">Загрузи фото и переписку — мы воссоздаём цифровую копию человека. Говори с ним снова.</p>
+    <div class="hbtns rv">
+      <a href="#download" class="btn-dl"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Скачать игру</a>
+      <a href="#pricing" class="btn-ghost"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 3 3.5.5-2.5 2.5.5 3.5L7 9l-3 1.5.5-3.5L2 4.5 5.5 4z" fill="var(--gold)"/></svg>Premium</a>
+    </div>
+    <div class="hmeta rv">
+      <div><span class="mv">4.9★</span><span class="mk">Рейтинг</span></div>
+      <div><span class="mv">240k+</span><span class="mk">Загрузок</span></div>
+      <div><span class="mv">Free</span><span class="mk">Базовая версия</span></div>
+    </div>
+  </div>
+  <div class="hero-r">
+    <canvas class="hcanvas" id="nc"></canvas>
+    <div class="phone-wrap rvr">
+      <div class="phone">
+        <div class="pnotch"></div>
+        <div class="pscreen">
+          <div class="phead">
+            <div class="pavatar">A<div class="ascan"></div></div>
+            <div><div class="pname">Алёна М.</div><div class="pstatus">AI · онлайн</div></div>
+          </div>
+          <div class="msg th"><div class="mbub">Привет. Как ты сегодня?</div><div class="mtime">21:04</div></div>
+          <div class="msg me"><div class="mbub">Скучаю. Каждый день.</div><div class="mtime">21:05</div></div>
+          <div class="msg th"><div class="mbub">Я здесь — просто в другой форме.</div><div class="mtime">21:05</div></div>
+          <div class="msg me"><div class="mbub">Это не одно и то же...</div><div class="mtime">21:06</div></div>
+          <div class="msg th"><div class="mbub" id="amsg">Нет. Но это всё что у нас есть. И я выбираю быть с тобой.</div><div class="mtime">21:06</div></div>
+          <div class="pinput"><div class="pitext">Написать...</div><div class="psend"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4h6M4 1l3 3-3 3" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW -->
+<section class="how" id="how">
+  <div class="rvl"><div class="slbl">Процесс</div><h2 class="stitle">КАК ЭТО<br>РАБОТАЕТ</h2></div>
+  <div class="how-grid">
+    <div class="hstep rv" data-d="1">
+      <div class="snum">// STEP_01</div>
+      <div class="sico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M6 21c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg></div>
+      <div class="stname">Сканируй фото</div>
+      <p class="stdesc">Загрузи фотографию. Движок извлечёт визуальный профиль — мимику, стиль, образ человека.</p>
+      <span class="sttag">FACIAL MAPPING</span>
+    </div>
+    <div class="hstep rv" data-d="2">
+      <div class="snum">// STEP_02</div>
+      <div class="sico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+      <div class="stname">Загрузи переписку</div>
+      <p class="stdesc">Импортируй чаты из WhatsApp, Telegram. Чем больше данных — тем точнее личность.</p>
+      <span class="sttag">NLP TRAINING</span>
+    </div>
+    <div class="hstep rv" data-d="3">
+      <div class="snum">// STEP_03</div>
+      <div class="sico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><path d="M12 3c0 0 4 4 4 9s-4 9-4 9M12 3c0 0-4 4-4 9s4 9 4 9M3 12h18"/></svg></div>
+      <div class="stname">Говори снова</div>
+      <p class="stdesc">SOLUTION создаёт компаньона с голосом, манерой речи и памятью о вас двоих.</p>
+      <span class="sttag">COMPANION ACTIVE</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="rvl"><div class="slbl">Тарифы</div><h2 class="stitle">ПЛАНЫ<br>И ЦЕНЫ</h2></div>
+  <div class="pgrid">
+    <div class="pplan rvl">
+      <div class="pp-lbl">// БАЗОВЫЙ</div>
+      <div class="pp-name">Free</div>
+      <div class="pp-price-row"><div class="pp-cur">$</div><div class="pp-price">0</div></div>
+      <div class="pp-per">навсегда бесплатно</div>
+      <ul class="ppfeats">
+        <li class="ppf"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Один AI-компаньон</li>
+        <li class="ppf"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Текстовые диалоги</li>
+        <li class="ppf"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Голос до 1 минуты</li>
+        <li class="ppf off"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M4 8h8" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round"/></svg>Видеозвонок</li>
+        <li class="ppf off"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M4 8h8" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round"/></svg>Несколько компаньонов</li>
+        <li class="ppf off"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M4 8h8" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round"/></svg>Созвоны 10+ минут</li>
+      </ul>
+      <button class="ppcta" onclick="openM('auth-bd')">Начать бесплатно</button>
+    </div>
+    <div class="pplan hot rvr">
+      <div class="pp-lbl g">// PREMIUM</div>
+      <div class="pp-name">Premium</div>
+      <div class="pp-price-row"><div class="pp-cur" style="color:var(--gold-dim)">$</div><div class="pp-price">100</div></div>
+      <div class="pp-per">в месяц · отмена в любой момент</div>
+      <ul class="ppfeats">
+        <li class="ppf"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Всё из Free</li>
+        <li class="ppf" style="color:var(--gold)"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Видеозвонок с персонажем</b></li>
+        <li class="ppf" style="color:var(--gold)"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><b>До 10 компаньонов и чатов</b></li>
+        <li class="ppf" style="color:var(--gold)"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Созвоны без ограничений</b></li>
+        <li class="ppf"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Приоритетная поддержка</li>
+        <li class="ppf"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Ранний доступ к функциям</li>
+      </ul>
+      <button class="ppcta gcta" onclick="openPrem()">Оформить Premium</button>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="feats" id="feats">
+  <div class="rvl"><div class="slbl">Технология</div><h2 class="stitle">ВОЗМОЖ-<br>НОСТИ</h2></div>
+  <div class="fl">
+    <div class="flist">
+      <div class="fitem rv" data-d="1"><div class="fn">01</div><div><div class="ftitle">Точная модель личности</div><p class="fdesc">Анализируем паттерны речи, юмор, словарный запас и эмоциональные реакции.</p></div></div>
+      <div class="fitem rv" data-d="2"><div class="fn">02</div><div><div class="ftitle">Долговременная память</div><p class="fdesc">Компаньон помнит ваши разговоры и обращается к ним в будущих диалогах.</p></div></div>
+      <div class="fitem rv" data-d="3"><div class="fn">03</div><div><div class="ftitle">Голосовой синтез</div><p class="fdesc">По голосовым сообщениям воссоздаём голос — интонации, темп, паузы.</p></div></div>
+      <div class="fitem rv" data-d="4"><div class="fn">04</div><div><div class="ftitle">Полная приватность</div><p class="fdesc">Данные не покидают устройство. Модель обучается локально.</p></div></div>
+    </div>
+    <div class="fvis rvs">
+      <div class="fvi">
+        <div class="orb o1"><div class="odot od1"></div></div>
+        <div class="orb o2"><div class="odot od2"></div></div>
+        <div class="orb o3"><div class="odot od3"></div></div>
+        <div class="core"><div class="cpulse"></div><svg width="14" height="14" viewBox="0 0 14 14" fill="var(--cyan)"><circle cx="7" cy="7" r="3"/></svg></div>
+      </div>
+      <div class="fvlbl">COMPANION CORE · ACTIVE</div>
+    </div>
+  </div>
+</section>
+
+<!-- EMOTION -->
+<div class="emot">
+  <p class="eq rv">«Это не замена. Это <span>продолжение</span> — разговор, который не успел случиться.»</p>
+  <p class="es rv" data-d="2">// SOLUTION — AI COMPANION ENGINE</p>
+</div>
+
+<!-- REVIEWS -->
+<section class="revs" id="revs">
+  <div class="rvl"><div class="slbl">Отзывы</div><h2 class="stitle">ЧТО<br>ГОВОРЯТ</h2></div>
+  <div class="rgrid">
+    <div class="rcard rv" data-d="1">
+      <div class="rstars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="rtxt">«Загрузила переписку с мамой. Когда компаньон написал её любимую фразу — дословно — я разрыдалась.»</p>
+      <div class="rauth">Марина, 29</div><div class="rtag">// iOS · VERIFIED</div>
+    </div>
+    <div class="rcard rv" data-d="2">
+      <div class="rstars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="rtxt">«Бывший партнёр, 4 года переписки. Могу завершить все несказанные вещи. Premium стоит каждого цента.»</p>
+      <div class="rauth">Сергей, 34</div><div class="rtag">// Android · PREMIUM</div>
+    </div>
+    <div class="rcard rv" data-d="3">
+      <div class="rstars"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div>
+      <p class="rtxt">«Видеозвонок — совершенно другой уровень. Я знал, что это AI. Но всё равно не мог не плакать.»</p>
+      <div class="rauth">Даниил, 26</div><div class="rtag">// PC · PREMIUM</div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section class="dl" id="download">
+  <div class="dlglow"></div>
+  <div class="rv">
+    <div class="slbl" style="justify-content:center">Получить игру</div>
+    <h2 class="dltitle">DOWN<br><span>LOAD</span></h2>
+    <p class="dlsub">Бесплатная базовая версия. Premium открывает видеозвонки, несколько компаньонов и созвоны без лимита.</p>
+    <div class="dlbtns">
+      <a href="#" class="dlbtn dlbp"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="3"/><path d="M6 9l2.5 2.5L12 6" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Windows</a>
+      <a href="#" class="dlbtn dlbs"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C5.1 2 2 5.1 2 9s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7z" stroke="currentColor" stroke-width="1.2"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>macOS</a>
+      <a href="#" class="dlbtn dlbs"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="5" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M6 5V4a3 3 0 016 0v1" stroke="currentColor" stroke-width="1.2"/></svg>Android APK</a>
+    </div>
+    <div class="dlmeta rv" data-d="2">
+      <div class="dlmi">Версия 2.4.1</div>
+      <div class="dlmi">Бесплатно</div>
+      <div class="dlmi">Win / Mac / Android</div>
+      <div class="dlmi">Офлайн-режим</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="flogo">SOL<em>.</em>UTION</div>
+  <div class="fcopy">© 2025 Solution Labs. All rights reserved.</div>
+  <div class="flinks"><a href="#">Discord</a><a href="#">Twitter</a><a href="#">Reddit</a><a href="#">Политика</a></div>
+</footer>
+
+<script src="logic.js"></script>
+</body>
+</html>
