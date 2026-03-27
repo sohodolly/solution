@@ -52,46 +52,72 @@ function setTab(t){
 // ──────── LOGIN ────────
 function doLogin(){
   clearErrs();
-  const e=document.getElementById('le').value.trim(),p=document.getElementById('lp').value;
-  let ok=true;
-  if(!e||!e.includes('@')){mark('le','le-e');ok=false}
-  if(!p){mark('lp','lp-e');ok=false}
-  if(!ok)return;
-  const btn=document.getElementById('lbtn');btn.disabled=true;btn.textContent='Проверяем...';
-  setTimeout(()=>{
-    const users=JSON.parse(localStorage.getItem('sol_users')||'[]');
-    const found=users.find(u=>u.email===e&&u.pass===p);
+  const e = document.getElementById('le').value.trim();
+  const p = document.getElementById('lp').value.trim(); // обрезаем пробелы
+  let ok = true;
+  if(!e || !e.includes('@')){ mark('le','le-e'); ok=false; }
+  if(!p){ mark('lp','lp-e'); ok=false; }
+  if(!ok) return;
+  
+  const btn = document.getElementById('lbtn');
+  btn.disabled = true;
+  btn.textContent = 'Проверяем...';
+  
+  setTimeout(() => {
+    const users = JSON.parse(localStorage.getItem('sol_users') || '[]');
+    const found = users.find(u => u.email === e && u.pass === p);
     if(!found){
-      document.getElementById('lp-e').textContent='Неверный email или пароль';
-      mark('lp','lp-e');btn.disabled=false;btn.textContent='Войти';return;
+      document.getElementById('lp-e').textContent = 'Неверный email или пароль';
+      mark('lp','lp-e');
+      btn.disabled = false;
+      btn.textContent = 'Войти';
+      return;
     }
-    user={name:found.name,email:found.email,premium:found.premium||false};
-    localStorage.setItem('sol_u',JSON.stringify(user));
-    showAuthSuc('Добро пожаловать, '+found.name+'!','Сеанс активирован.');
-    renderNav();btn.disabled=false;btn.textContent='Войти';
-  },800);
+    user = { name: found.name, email: found.email, premium: found.premium || false };
+    localStorage.setItem('sol_u', JSON.stringify(user));
+    showAuthSuc('Добро пожаловать, ' + found.name + '!', 'Сеанс активирован.');
+    renderNav();
+    btn.disabled = false;
+    btn.textContent = 'Войти';
+  }, 800);
 }
 
 // ──────── REGISTER ────────
 function doReg(){
   clearErrs();
-  const n=document.getElementById('rn').value.trim(),e=document.getElementById('re').value.trim(),p=document.getElementById('rp').value,p2=document.getElementById('rp2').value;
-  let ok=true;
-  if(n.length<3){mark('rn','rn-e');ok=false}
-  if(!e||!e.includes('@')){mark('re','re-e');ok=false}
-  if(p.length<6){mark('rp','rp-e');ok=false}
-  if(p!==p2){mark('rp2','rp2-e');ok=false}
-  if(!ok)return;
-  const btn=document.getElementById('rbtn');btn.disabled=true;btn.textContent='Создаём...';
-  setTimeout(()=>{
-    const users=JSON.parse(localStorage.getItem('sol_users')||'[]');
-    if(users.find(u=>u.email===e)){document.getElementById('re-e').textContent='Email уже используется';mark('re','re-e');btn.disabled=false;btn.textContent='Создать аккаунт';return}
-    users.push({name:n,email:e,pass:p,premium:false});
-    localStorage.setItem('sol_users',JSON.stringify(users));
-    user={name:n,email:e,premium:false};localStorage.setItem('sol_u',JSON.stringify(user));
-    showAuthSuc('Аккаунт создан, '+n+'!','Добро пожаловать в SOLUTION.');
-    renderNav();btn.disabled=false;btn.textContent='Создать аккаунт';
-  },900);
+  const n = document.getElementById('rn').value.trim();
+  const e = document.getElementById('re').value.trim();
+  const p = document.getElementById('rp').value.trim(); // обрезаем пробелы
+  const p2 = document.getElementById('rp2').value.trim();
+  let ok = true;
+  if(n.length < 3){ mark('rn','rn-e'); ok=false; }
+  if(!e || !e.includes('@')){ mark('re','re-e'); ok=false; }
+  if(p.length < 6){ mark('rp','rp-e'); ok=false; }
+  if(p !== p2){ mark('rp2','rp2-e'); ok=false; }
+  if(!ok) return;
+  
+  const btn = document.getElementById('rbtn');
+  btn.disabled = true;
+  btn.textContent = 'Создаём...';
+  
+  setTimeout(() => {
+    const users = JSON.parse(localStorage.getItem('sol_users') || '[]');
+    if(users.find(u => u.email === e)){
+      document.getElementById('re-e').textContent = 'Email уже используется';
+      mark('re','re-e');
+      btn.disabled = false;
+      btn.textContent = 'Создать аккаунт';
+      return;
+    }
+    users.push({ name: n, email: e, pass: p, premium: false });
+    localStorage.setItem('sol_users', JSON.stringify(users));
+    user = { name: n, email: e, premium: false };
+    localStorage.setItem('sol_u', JSON.stringify(user));
+    showAuthSuc('Аккаунт создан, ' + n + '!', 'Добро пожаловать в SOLUTION.');
+    renderNav();
+    btn.disabled = false;
+    btn.textContent = 'Создать аккаунт';
+  }, 900);
 }
 
 function mark(inpId,errId){document.getElementById(inpId).classList.add('err');document.getElementById(errId).classList.add('on')}
