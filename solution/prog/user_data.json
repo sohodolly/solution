@@ -1,0 +1,14 @@
+{
+  "username": "supra",
+  "has_subscription": true,
+  "social_networks": {
+    "telegram": "supra"
+  },
+  "chats": [
+    {
+      "social_network": "telegram",
+      "other_person": "бодя",
+      "file_path": "c:\\Users\\supra\\Music\\solution\\prog\\result.json"
+    }
+  ]
+}
