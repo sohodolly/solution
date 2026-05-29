@@ -6,7 +6,7 @@
 
 ---
 
-## 🧠 Concept
+## Concept
 
 Solution lets users recreate a **digital double** of a person:
 - Appearance based on photos (2D/3D)
@@ -23,14 +23,14 @@ The product is positioned as an **interactive game with personalization elements
 
 ---
 
-## 🎯 Target Audience (Premium Segment)
+## Target Audience (Premium Segment)
 - Willing to pay from $200/month
 - Low price sensitivity
 - High loyalty when engaged
 
 ---
 
-## 🏗 Architecture & Development Stages
+## Architecture & Development Stages
 
 ### Stage 1 (until August 2026) — text chat, 2D avatar, data collection
 - Parse chats (Telegram, WhatsApp) → structured JSON (text + metadata for voice/photo)
@@ -57,7 +57,7 @@ The product is positioned as an **interactive game with personalization elements
 
 ---
 
-## 🔒 Privacy & Security
+## Privacy & Security
 
 - **Encryption:** AES-256-GCM (client + server)
 - Keys derived from user password (PBKDF2) — never stored in plaintext on server
@@ -69,7 +69,7 @@ The product is positioned as an **interactive game with personalization elements
 
 ---
 
-## ⚖️ Legal Strategy (short version)
+## Legal Strategy (short version)
 
 - Officially positioned as an **interactive game with personalization**
 - Terms of Use explicitly state:
@@ -81,7 +81,7 @@ The product is positioned as an **interactive game with personalization elements
 
 ---
 
-## 🗓 Roadmap to August 2026
+## Roadmap to August 2026
 
 | Period | Tasks |
 |--------|-------|
@@ -92,19 +92,7 @@ The product is positioned as an **interactive game with personalization elements
 
 ---
 
-## ⚠️ Risks & Mitigation
-
-| Risk | Mitigation |
-|------|-------------|
-| Delay of deadlines | Strict scope (text + 2D only), weekly syncs |
-| Legal claims | Game wrapper, clear Terms of Use, external lawyer |
-| Data breach | Encryption, limited access, NDA, logging |
-| Team conflict | Fixed roles, open decision-making |
-| High complexity of 3D | Stage 1 uses only 2D; 3D outsourced if needed |
-
----
-
-## 📁 Repository structure (planned)
+## Repository structure (planned)
 solution/
 ├── parser/ # Telegram/WhatsApp → JSON
 ├── backend/ # FastAPI + LLM inference
@@ -116,7 +104,7 @@ solution/
 
 ---
 
-## 👥 Team (public summary)
+## Team (public summary)
 
 - **Project lead & web development** — strategy, parsing, coordination  
 - **ML / Python** — ML pipelines, LLM + backend integration  
@@ -128,7 +116,7 @@ solution/
 
 ---
 
-## 🚀 Getting Started (for internal development)
+## Getting Started (for internal development)
 
 > No public deployment yet. The following instructions are for team members.
 
@@ -142,14 +130,14 @@ solution/
 
 ---
 
-## 📄 License
+## License
 
 Proprietary — all rights reserved.  
 Not open for public use or redistribution without written permission.
 
 ---
 
-## 📬 Contacts
+## Contacts
 
 For investors and partnership inquiries:  
 *(contact information provided separately, not in public repo)*
