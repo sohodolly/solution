@@ -96,10 +96,15 @@ The product is positioned as an **interactive game with personalization elements
 solution/
 
 ├── parser/ # Telegram/WhatsApp → JSON
+
 ├── backend/ # FastAPI + LLM inference
+
 ├── frontend/ # HTML/CSS/JS chat + 2D avatar
+
 ├── data/ # encrypted user data (gitignored)
+
 ├── docs/ # internal docs, Terms of Use drafts
+
 └── README.md
 
 
