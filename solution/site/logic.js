@@ -53,7 +53,7 @@ function setTab(t){
 function doLogin(){
   clearErrs();
   const e = document.getElementById('le').value.trim();
-  const p = document.getElementById('lp').value.trim(); // обрезаем пробелы
+  const p = document.getElementById('lp').value.trim();
   let ok = true;
   if(!e || !e.includes('@')){ mark('le','le-e'); ok=false; }
   if(!p){ mark('lp','lp-e'); ok=false; }
@@ -87,7 +87,7 @@ function doReg(){
   clearErrs();
   const n = document.getElementById('rn').value.trim();
   const e = document.getElementById('re').value.trim();
-  const p = document.getElementById('rp').value.trim(); // обрезаем пробелы
+  const p = document.getElementById('rp').value.trim();
   const p2 = document.getElementById('rp2').value.trim();
   let ok = true;
   if(n.length < 3){ mark('rn','rn-e'); ok=false; }
@@ -154,13 +154,18 @@ function toggleDrop(){document.getElementById('userwrap').classList.toggle('open
 function closeDrop(){document.getElementById('userwrap').classList.remove('open')}
 document.addEventListener('click',e=>{const w=document.getElementById('userwrap');if(w&&!w.contains(e.target))closeDrop()});
 
-// ──────── PREMIUM ────────
+// ──────── PREMIUM / PRO ────────
 function openPrem(){
   if(!user){openM('auth-bd');toast('Войдите чтобы оформить Premium','b');return}
   closeDrop();showPlans();openM('prem-bd');
 }
-function showPay(){document.getElementById('plans-view').style.display='none';document.getElementById('payform').classList.add('on')}
-function showPlans(){document.getElementById('plans-view').style.display='';document.getElementById('payform').classList.remove('on')}
+function openPremPro(){
+  if(!user){openM('auth-bd');toast('Войдите чтобы оформить PRO','b');return}
+  closeDrop();showPlans();openM('prem-bd');
+}
+function showPay(){document.getElementById('plans-view').style.display='none';document.getElementById('payform').classList.add('on');document.getElementById('payform-pro').classList.remove('on')}
+function showPayPro(){document.getElementById('plans-view').style.display='none';document.getElementById('payform-pro').classList.add('on');document.getElementById('payform').classList.remove('on')}
+function showPlans(){document.getElementById('plans-view').style.display='';document.getElementById('payform').classList.remove('on');document.getElementById('payform-pro').classList.remove('on')}
 
 function fmtCard(el){let v=el.value.replace(/\D/g,'').slice(0,16);el.value=v.replace(/(.{4})/g,'$1 ').trim()}
 function fmtExp(el){let v=el.value.replace(/\D/g,'');if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2,4);el.value=v}
@@ -187,18 +192,45 @@ function doPay(){
   },1400);
 }
 
-// ──────── NEURAL CANVAS ────────
+function doPayPro(){
+  document.querySelectorAll('#payform-pro .ferr').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('#payform-pro .fi').forEach(e=>e.classList.remove('err'));
+  const c=document.getElementById('pc-pro').value.replace(/\s/g,'');
+  const e=document.getElementById('pe-pro').value;
+  const v=document.getElementById('pv-pro').value;
+  let ok=true;
+  if(c.length!==16){mark('pc-pro','pc-pro-e');ok=false}
+  if(!e.match(/^\d{2}\/\d{2}$/)){mark('pe-pro','pe-pro-e');ok=false}
+  if(v.length!==3){mark('pv-pro','pv-pro-e');ok=false}
+  if(!ok)return;
+  const btn=document.getElementById('paybtn-pro');btn.disabled=true;btn.textContent='Обрабатываем...';
+  setTimeout(()=>{
+    user.premium=true; // PRO даёт те же права, что и Premium (можно расширить)
+    localStorage.setItem('sol_u',JSON.stringify(user));
+    const users=JSON.parse(localStorage.getItem('sol_users')||'[]');
+    const uu=users.find(u=>u.email===user.email);if(uu)uu.premium=true;
+    localStorage.setItem('sol_users',JSON.stringify(users));
+    renderNav();closeM('prem-bd');
+    toast('🎉 PRO активирован!','g');
+    btn.disabled=false;btn.textContent='Оплатить · $50 / мес';
+    ['pn-pro','pc-pro','pe-pro','pv-pro'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  },1400);
+}
+
+// ──────── NEURAL CANVAS (оптимизирован) ────────
 const canvas=document.getElementById('nc'),ctx=canvas.getContext('2d');
 let W,H,nodes=[];
 function rsz(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight}
 rsz();window.addEventListener('resize',rsz);
-for(let i=0;i<55;i++)nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+1});
+// Уменьшено количество узлов с 55 до 22 для экономии ресурсов
+for(let i=0;i<22;i++)nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+1});
 (function draw(){
   ctx.clearRect(0,0,W,H);
   for(let i=0;i<nodes.length;i++){
     const n=nodes[i];n.x+=n.vx;n.y+=n.vy;
     if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;
-    for(let j=i+1;j<nodes.length;j++){const m=nodes[j],d=Math.hypot(n.x-m.x,n.y-m.y);if(d<130){ctx.beginPath();ctx.strokeStyle=`rgba(61,139,255,${.12*(1-d/130)})`;ctx.lineWidth=.5;ctx.moveTo(n.x,n.y);ctx.lineTo(m.x,m.y);ctx.stroke()}}
+    // Уменьшена дистанция для связей с 130 до 100 для снижения нагрузки
+    for(let j=i+1;j<nodes.length;j++){const m=nodes[j],d=Math.hypot(n.x-m.x,n.y-m.y);if(d<100){ctx.beginPath();ctx.strokeStyle=`rgba(61,139,255,${.10*(1-d/100)})`;ctx.lineWidth=.5;ctx.moveTo(n.x,n.y);ctx.lineTo(m.x,m.y);ctx.stroke()}}
     ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fillStyle='rgba(61,139,255,.4)';ctx.fill();
   }
   requestAnimationFrame(draw);
@@ -220,7 +252,6 @@ const msgs=['Я думаю о тебе каждый день.','Ты измен�
 let mi=0;const amsg=document.getElementById('amsg');
 setInterval(()=>{mi=(mi+1)%msgs.length;amsg.style.opacity='0';amsg.style.transition='opacity .4s';setTimeout(()=>{amsg.textContent=msgs[mi];amsg.style.opacity='1'},400)},3500);
 
-
 // ===== МОБИЛЬНОЕ МЕНЮ =====
 const burger = document.getElementById('burgerBtn');
 const navLinks = document.querySelector('.nav-links');
@@ -230,14 +261,12 @@ if (burger && navLinks) {
     navLinks.classList.toggle('open');
     burger.classList.toggle('open');
   });
-  // Закрытие меню при клике на ссылку
   navLinks.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       navLinks.classList.remove('open');
       burger.classList.remove('open');
     });
   });
-  // Закрытие при клике вне меню
   document.addEventListener('click', (e) => {
     if (!navLinks.contains(e.target) && !burger.contains(e.target)) {
       navLinks.classList.remove('open');
@@ -245,3 +274,29 @@ if (burger && navLinks) {
     }
   });
 }
+
+// ===== ПЕРЕКЛЮЧЕНИЕ ТАБОВ ЗАГРУЗКИ =====
+const tabs = document.querySelectorAll('.dl-tab');
+const btns = {
+  win: document.getElementById('dl-btn-win'),
+  mac: document.getElementById('dl-btn-mac'),
+  linux: document.getElementById('dl-btn-linux')
+};
+tabs.forEach(tab => {
+  tab.addEventListener('click', function() {
+    tabs.forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    const os = this.dataset.os;
+    // Скрыть все кнопки
+    Object.values(btns).forEach(b => b.style.display = 'none');
+    // Показать нужную
+    if (os === 'win') btns.win.style.display = 'inline-flex';
+    else if (os === 'mac') btns.mac.style.display = 'inline-flex';
+    else if (os === 'linux') btns.linux.style.display = 'inline-flex';
+  });
+});
+// По умолчанию активна Windows
+document.querySelector('.dl-tab[data-os="win"]')?.classList.add('active');
+btns.win.style.display = 'inline-flex';
+btns.mac.style.display = 'none';
+btns.linux.style.display = 'none';
