@@ -94,6 +94,7 @@ The product is positioned as an **interactive game with personalization elements
 
 ## Repository structure (planned)
 solution/
+
 ├── parser/ # Telegram/WhatsApp → JSON
 ├── backend/ # FastAPI + LLM inference
 ├── frontend/ # HTML/CSS/JS chat + 2D avatar
