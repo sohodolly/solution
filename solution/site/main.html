@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SOLUTION — Recreate Who You Lost</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=Syne+Mono&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">k
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -84,27 +84,44 @@
             </ul>
             <button class="plan-btn" onclick="closeM('prem-bd')">Текущий план</button>
           </div>
-          
-<div class="plan hot">
-  <div class="plan-badge">ПОПУЛЯРНЫЙ</div>
-  <div class="plan-tier">// PREMIUM</div>
-  <div class="plan-price">100<sub>$</sub></div>
-  <div class="plan-mo">в месяц · отмена в любой момент</div>
-  <ul class="plan-feats">
-    <li class="pf">Всё из Free</li>
-    <li class="pf" style="color:var(--cyan)">Видеозвонок с персонажем</li>
-    <li class="pf" style="color:var(--cyan)">До 10 компаньонов и чатов</li>
-    <li class="pf" style="color:var(--cyan)">Созвоны без ограничений</li>
-    <li class="pf">Приоритетная поддержка</li>
-    <li class="pf">Ранний доступ к функциям</li>
-  </ul>
-  <button class="plan-btn cyan-btn" onclick="showPay()">Оформить Premium</button>
-</div>
+
+          <!-- ═══ PRO — НОВЫЙ ПЛАН ═══ -->
+          <div class="plan pro">
+            <div class="plan-badge pro-badge">ПРО</div>
+            <div class="plan-tier pro-tier">// PRO</div>
+            <div class="plan-price pro-price">50<sub>$</sub></div>
+            <div class="plan-mo">в месяц · отмена в любой момент</div>
+            <ul class="plan-feats">
+              <li class="pf">Всё из Free</li>
+              <li class="pf" style="color:var(--pro)">Видеозвонок с персонажем</li>
+              <li class="pf" style="color:var(--pro)">До 3 компаньонов</li>
+              <li class="pf" style="color:var(--pro)">Созвоны до 30 мин</li>
+              <li class="pf">Приоритетная поддержка</li>
+              <li class="pf">Ранний доступ к функциям</li>
+            </ul>
+            <button class="plan-btn pro-btn" onclick="showPayPro()">Оформить PRO</button>
+          </div>
+
+          <div class="plan hot">
+            <div class="plan-badge">ПОПУЛЯРНЫЙ</div>
+            <div class="plan-tier">// PREMIUM</div>
+            <div class="plan-price">100<sub>$</sub></div>
+            <div class="plan-mo">в месяц · отмена в любой момент</div>
+            <ul class="plan-feats">
+              <li class="pf">Всё из Free</li>
+              <li class="pf" style="color:var(--cyan)">Видеозвонок с персонажем</li>
+              <li class="pf" style="color:var(--cyan)">До 10 компаньонов и чатов</li>
+              <li class="pf" style="color:var(--cyan)">Созвоны без ограничений</li>
+              <li class="pf">Приоритетная поддержка</li>
+              <li class="pf">Ранний доступ к функциям</li>
+            </ul>
+            <button class="plan-btn cyan-btn" onclick="showPay()">Оформить Premium</button>
+          </div>
         </div>
         <div class="prem-note">// Stripe · SSL · автопродление ежемесячно</div>
       </div>
 
-      <!-- PAYMENT -->
+      <!-- PAYMENT (Premium) -->
       <div class="payform" id="payform">
         <button class="pay-back" onclick="showPlans()">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 1L3 6l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -121,6 +138,26 @@
           <div class="fg"><label class="flbl">CVV</label><input class="fi" id="pv" type="text" placeholder="•••" maxlength="3"><div class="ferr" id="pv-e">3 цифры</div></div>
         </div>
         <button class="fsub" id="paybtn" onclick="doPay()" style="background:var(--gold);color:var(--black)">Оплатить · $100 / мес</button>
+        <div class="pay-sec-note">// Безопасная оплата · Stripe · TLS 1.3 · данные зашифрованы</div>
+      </div>
+
+      <!-- PAYMENT (PRO) -->
+      <div class="payform" id="payform-pro">
+        <button class="pay-back" onclick="showPlans()">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 1L3 6l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          НАЗАД
+        </button>
+        <div class="pay-sum" style="border-color:var(--pro-dim)">
+          <div class="pay-sum-lbl">SOLUTION PRO · ежемесячно</div>
+          <div class="pay-sum-price" style="color:var(--pro)">$50 / мес</div>
+        </div>
+        <div class="fg"><label class="flbl">Имя на карте</label><input class="fi" id="pn-pro" type="text" placeholder="IVAN PETROV"></div>
+        <div class="fg"><label class="flbl">Номер карты</label><input class="fi" id="pc-pro" type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)"><div class="ferr" id="pc-pro-e">Введите корректный номер</div></div>
+        <div class="two-col">
+          <div class="fg"><label class="flbl">Срок</label><input class="fi" id="pe-pro" type="text" placeholder="MM/YY" maxlength="5" oninput="fmtExp(this)"><div class="ferr" id="pe-pro-e">Формат MM/YY</div></div>
+          <div class="fg"><label class="flbl">CVV</label><input class="fi" id="pv-pro" type="text" placeholder="•••" maxlength="3"><div class="ferr" id="pv-pro-e">3 цифры</div></div>
+        </div>
+        <button class="fsub" id="paybtn-pro" onclick="doPayPro()" style="background:var(--pro);color:var(--black)">Оплатить · $50 / мес</button>
         <div class="pay-sec-note">// Безопасная оплата · Stripe · TLS 1.3 · данные зашифрованы</div>
       </div>
 
@@ -145,7 +182,7 @@
 </button>
     <!-- GUEST -->
     <div id="nav-guest" style="display:flex;gap:12px;align-items:center">
-      <div class="nav-tag">v2.4.1</div>
+      <div class="nav-tag">A1.1</div>
       <button class="nav-btn" onclick="openM('auth-bd')">Войти</button>
       <button class="nav-btn nav-btn-cyan" onclick="openM('auth-bd');setTab('reg')"><span class="lbl">Регистрация</span></button>
     </div>
@@ -277,6 +314,24 @@
       </ul>
       <button class="ppcta" onclick="openM('auth-bd')">Начать бесплатно</button>
     </div>
+
+    <!-- ═══ PRO — НОВЫЙ ПЛАН ═══ -->
+    <div class="pplan pro-plan rvr">
+      <div class="pp-lbl pro-lbl">// ПРО</div>
+      <div class="pp-name pro-name">PRO</div>
+      <div class="pp-price-row"><div class="pp-cur pro-cur">$</div><div class="pp-price pro-price">50</div></div>
+      <div class="pp-per pro-per">в месяц · отмена в любой момент</div>
+      <ul class="ppfeats">
+        <li class="ppf pro-f"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--pro)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Всё из Free</li>
+        <li class="ppf pro-f" style="color:var(--pro)"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--pro)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Видеозвонок с персонажем</b></li>
+        <li class="ppf pro-f" style="color:var(--pro)"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--pro)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><b>До 3 компаньонов</b></li>
+        <li class="ppf pro-f" style="color:var(--pro)"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--pro)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Созвоны до 30 мин</b></li>
+        <li class="ppf"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--pro)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Приоритетная поддержка</li>
+        <li class="ppf"><svg class="ppc" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="var(--pro)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Ранний доступ к функциям</li>
+      </ul>
+      <button class="ppcta pro-cta" onclick="openPremPro()">Оформить PRO</button>
+    </div>
+
     <div class="pplan hot rvr">
       <div class="pp-lbl g">// PREMIUM</div>
       <div class="pp-name">Premium</div>
@@ -352,15 +407,24 @@
     <div class="slbl" style="justify-content:center">Получить игру</div>
     <h2 class="dltitle">DOWN<br><span>LOAD</span></h2>
     <p class="dlsub">Бесплатная базовая версия. Premium открывает видеозвонки, несколько компаньонов и созвоны без лимита.</p>
-    <div class="dlbtns">
-      <a href="#" class="dlbtn dlbp"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="3"/><path d="M6 9l2.5 2.5L12 6" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Windows</a>
-      <a href="#" class="dlbtn dlbs"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C5.1 2 2 5.1 2 9s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7z" stroke="currentColor" stroke-width="1.2"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>macOS</a>
-      <a href="#" class="dlbtn dlbs"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="5" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M6 5V4a3 3 0 016 0v1" stroke="currentColor" stroke-width="1.2"/></svg>Android APK</a>
+
+    <!-- ═══ ТАБЫ ДЛЯ СКАЧИВАНИЯ ═══ -->
+    <div class="dl-tabs">
+      <button class="dl-tab active" data-os="win">Windows</button>
+      <button class="dl-tab" data-os="mac">macOS</button>
+      <button class="dl-tab" data-os="linux">Linux</button>
     </div>
+
+    <div class="dlbtns">
+      <a href="#" class="dlbtn dlbp" id="dl-btn-win"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="3"/><path d="M6 9l2.5 2.5L12 6" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Скачать для Windows</a>
+      <a href="#" class="dlbtn dlbs" id="dl-btn-mac" style="display:none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C5.1 2 2 5.1 2 9s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7z" stroke="currentColor" stroke-width="1.2"/><path d="M6 9h6M9 6v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Скачать для macOS</a>
+      <a href="#" class="dlbtn dlbs" id="dl-btn-linux" style="display:none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3L3 6v6l6 3 6-3V6L9 3z" stroke="currentColor" stroke-width="1.2"/><circle cx="6" cy="9" r="1" fill="currentColor"/><circle cx="12" cy="9" r="1" fill="currentColor"/><path d="M6 12c.7.8 1.8 1.3 3 1.3s2.3-.5 3-1.3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Скачать для Linux</a>
+    </div>
+
     <div class="dlmeta rv" data-d="2">
-      <div class="dlmi">Версия 2.4.1</div>
+      <div class="dlmi">Версия A1.1</div>
       <div class="dlmi">Бесплатно</div>
-      <div class="dlmi">Win / Mac / Android</div>
+      <div class="dlmi">Win / Mac / Linux</div>
       <div class="dlmi">Офлайн-режим</div>
     </div>
   </div>
@@ -368,7 +432,7 @@
 
 <footer>
   <div class="flogo">SOL<em>.</em>UTION</div>
-  <div class="fcopy">© 2025 Solution Labs. All rights reserved.</div>
+  <div class="fcopy">© 2026 Solution Labs. All rights reserved.</div>
   <div class="flinks"><a href="#">Discord</a><a href="#">Twitter</a><a href="#">Reddit</a><a href="#" onclick="openM('privacy-bd'); return false">Политика</a></div>
 </footer>
 
@@ -386,7 +450,7 @@
     <div class="modal-bd privacy-content">
       <div class="privacy-text">
         <p><strong>Дата вступления в силу:</strong> 26 марта 2026<br>
-        <strong>Версия:</strong> 1.0</p>
+        <strong>Версия:</strong> 1.1</p>
 
         <h3>1. Общие положения</h3>
         <p>Настоящая Политика конфиденциальности (далее – «Политика») регулирует порядок обработки и защиты информации, которую пользователь (далее – «Пользователь») предоставляет при использовании игровой платформы «Фантом» (далее – «Платформа»).</p>
@@ -448,7 +512,7 @@
           <li>Потребовать удаления данных (при отсутствии законных оснований для их дальнейшего хранения);</li>
           <li>Обжаловать действия Администрации в надзорный орган (например, в Европейский совет по защите данных).</li>
         </ul>
-        <p>Для реализации этих прав достаточно обратиться по адресу support@fantomas.com. Ответ предоставляется в течение 30 дней.</p>
+        <p>Для реализации этих прав достаточно обратиться по адресу support@solution.com. Ответ предоставляется в течение 30 дней.</p>
 
         <h3>8. Использование файлов cookie и аналитики</h3>
         <p>Сайт и приложение могут использовать cookie для аутентификации, аналитики и улучшения пользовательского опыта. Пользователь может настроить браузер для блокировки cookie, однако это может повлиять на функциональность.</p>
@@ -462,8 +526,8 @@
 
         <h3>11. Контактная информация</h3>
         <p>По всем вопросам, связанным с обработкой персональных данных, вы можете связаться с нами:</p>
-        <p>Администрация Платформы «Фантом»<br>
-        Email: support@fantomas.com</p>
+        <p>Администрация Платформы «Solution»<br>
+        Email: support@solution.com</p>
         <p>Настоящая Политика является неотъемлемой частью Пользовательского соглашения (Terms of Use).</p>
       </div>
     </div>
